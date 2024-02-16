@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const Thought = require('../models/Thought');
 
+// getting all users
 router.get('/', async (req, res) => {
     try {
         const users = await User.find();
@@ -12,10 +13,12 @@ router.get('/', async (req, res) => {
     }
 });
 
+// getting a particular user by their ID
 router.get('/:id', getUser, (req, res) => {
     res.json(res.user);
 });
 
+// creating/posting a new user
 router.post('/', async (req, res) => {
     const user = new User({
         username: req.body.username,
@@ -29,6 +32,7 @@ router.post('/', async (req, res) => {
     }
 });
 
+// updating/putting a user by ID
 router.put('/:id', getUser, async (req, res) => {
     if (req.body.username != null) {
         res.user.username = req.body.username;
@@ -45,6 +49,7 @@ router.put('/:id', getUser, async (req, res) => {
     }
 });
 
+// deleting a user by ID
 router.delete('/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -59,6 +64,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+// creating/posting an existing user as a friend to another existing user by ID
 router.post('/:userId/friends/:friendId', async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate(
@@ -75,6 +81,7 @@ router.post('/:userId/friends/:friendId', async (req, res) => {
     }
 });
 
+// deleting a friend from a user by ID
 router.delete('/:userId/friends/:friendId', async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate(
